@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
 public class User {
-
     private String userName , passWord;
 
     public User(InputStream inputStream) throws IOException {
@@ -18,7 +16,6 @@ public class User {
             throw new IOException("F...!!! ");
         }
         this.userName = new String(userNameByte);
-        //pass
         int passLength = inputStream.read();
         byte[] passByte = new byte[passLength];
         actuallyRead = inputStream.read(passByte);
@@ -26,8 +23,8 @@ public class User {
             throw new IOException("S...!");
         }
         this.passWord = new String(passByte);
-
     }
+
     public void write(OutputStream outputStream) throws IOException {
         byte[] userNameBytes = userName.getBytes();
         outputStream.write(userNameBytes.length);
@@ -36,9 +33,9 @@ public class User {
         outputStream.write(passWordBytes.length);
         outputStream.write(passWordBytes);
     }
-    public User(String userName, String passWord){
+    public User(String userName, String password){
         this.userName = userName;
-        this.passWord = passWord;
+        this.passWord = password;
     }
 
     public String getUserName() {
@@ -46,7 +43,6 @@ public class User {
     }
 
     public void setUserName(String userName) {
-
         this.userName = userName;
     }
 

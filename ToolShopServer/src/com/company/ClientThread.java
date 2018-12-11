@@ -1,32 +1,24 @@
 package com.company;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class ClientThread extends Thread{
 
-    public static final int GET_TOOLS = 300;
-    public static final int SEND_TOOLS = 301;
+
     public final int SIGNUP = 100;
     public final int LOGIN = 101;
     public final int OK = 200;
     public final int FAILURE = 201;
     private Socket socket;
-    private ArrayList<ToolsStore> toolsStores;
 
     private Map<String, User> users;
     private InputStream inputStream;
     private OutputStream outputStream;
 
-    public ClientThread(Socket socket, ArrayList<ToolsStore> toolsStores, Map<String, User> users) {
+    public ClientThread(Socket socket, Map<String, User> users) {
         this.socket = socket;
-        this.toolsStores = toolsStores;
         this.users = users;
     }
 
@@ -42,12 +34,6 @@ public class ClientThread extends Thread{
                     break;
                 case LOGIN:
                     login();
-                    break;
-                case GET_TOOLS:
-                    getTools();
-                    break;
-                case SEND_TOOLS:
-                    sendTools();
                     break;
             }
         } catch (IOException e) {
@@ -84,15 +70,24 @@ public class ClientThread extends Thread{
         if (!users.containsKey(user.getUserName())){
             users.put(user.getUserName(), user);
 
+            // add to usersFile name,pass
+            String basePath = "C:\\Kobi projects\\Home projects\\usersFile.txt";
+            BufferedWriter usersFile = new BufferedWriter(new FileWriter(basePath, true));
+
+            PrintWriter printWriter = new PrintWriter(usersFile);
+            printWriter.println(user.getUserName() + "," + user.getPassWord());
+            printWriter.close();
+
             successSignup = true;
         }
         outputStream.write(successSignup ? OK : FAILURE);
     }
     private void login() throws IOException{
         User user = new User(inputStream);
-        outputStream.write(valuUser(user) ? OK : FAILURE);
+
+        outputStream.write(validateUser(user) ? OK : FAILURE);
     }
-    private boolean valuUser(User user){
+    private boolean validateUser(User user){
         User existUser = users.get(user.getUserName());
         if(existUser != null){
             if(user.getPassWord().equals(existUser.getPassWord())){
@@ -100,41 +95,6 @@ public class ClientThread extends Thread{
             }
         }
         return false;
-    }
-
-    private void sendTools() throws IOException {
-        User user = new User(inputStream);
-        if (!valuUser(user))
-            return;
-        int toolsStoreLength = inputStream.read();
-        if (toolsStoreLength == -1)
-            return;
-        byte[] toolsStoreBytes = new byte[toolsStoreLength];
-        int actuallyRead = inputStream.read(toolsStoreBytes);
-        if (actuallyRead != toolsStoreLength)
-            return;
-        ToolsStore toolsStore = new ToolsStore(user.getUserName(), new Integer(String.valueOf(toolsStoreBytes)));
-        toolsStores.add(toolsStore);
-        outputStream.write(OK);
-    }
-
-    private void getMessages() throws IOException{
-        User user = new User(inputStream);
-        if(!valuUser(user))
-            return;
-        byte[] fromBytes = new byte[4];
-        int actuallyRead = inputStream.read(fromBytes);
-        if(actuallyRead != 4)
-            return;
-        int from = ByteBuffer.wrap(fromBytes).getInt();
-        for (int i = from; i < toolsStores.size(); i++) {
-            ToolsStore toolsStore = toolsStores.get(i);
-            toolsStore.write(outputStream);
-        }
-    }
-
-    private void getTools(){
-
     }
 }
 

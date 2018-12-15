@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Scanner s = new Scanner(System.in);
-        String userName, passWord;
+        String userName = "", passWord = "";
         boolean isSignup = false;
         String input = "";
 
@@ -19,6 +19,11 @@ public class Main {
             System.out.println("1. login");
             System.out.println("2. signup");
             input = s.nextLine();
+            if (!input.equals("1") && !input.equals("2")){
+                System.out.println("invalid choice");
+                continue;
+            }
+
             isSignup = input.equals("2");
 
             System.out.println("Enter userName: ");

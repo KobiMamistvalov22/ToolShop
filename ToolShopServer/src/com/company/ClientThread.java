@@ -75,8 +75,7 @@ public class ClientThread extends Thread{
             users.put(user.getUserName(), user);
 
             // add to usersFile name,pass
-            String basePath = "C:\\Kobi projects\\Home projects\\usersFile.txt";
-            BufferedWriter usersFile = new BufferedWriter(new FileWriter(basePath, true));
+            BufferedWriter usersFile = new BufferedWriter(new FileWriter("usersFile.txt", true));
 
             PrintWriter printWriter = new PrintWriter(usersFile);
             printWriter.println(user.getUserName() + "," + user.getPassWord());

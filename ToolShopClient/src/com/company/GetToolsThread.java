@@ -5,28 +5,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
 
 public class GetToolsThread extends Thread {
 
     public static final String HOST = "127.0.0.1";
     public static final int PORT = 3000;
-    public static final int GET_TOOLS = 300;
+    public static final int GET_TOOLS = 250;
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
-    private boolean go;
-    private User user;
-    private ArrayList<UserCart> carts;
-
-
-
-    public GetToolsThread( User user, ArrayList<UserCart> carts){
-        this.carts = carts;
-        this.user = user;
-        go = true;
-    }
+    private Tools tools;
 
     @Override
     public void run() {
@@ -34,26 +22,20 @@ public class GetToolsThread extends Thread {
         outputStream = null;
         socket = null;
         try {
-            while (go){
-                socket = new Socket(HOST, PORT);
-                inputStream = socket.getInputStream();
-                outputStream = socket.getOutputStream();
+            socket = new Socket(HOST, PORT);
+            inputStream = socket.getInputStream();
+            outputStream = socket.getOutputStream();
 
-                outputStream.write(GET_TOOLS);
+            outputStream.write(GET_TOOLS);
 
-                user.write(outputStream);
+            int numberOfTools = inputStream.read();
+            this.tools = new Tools();
 
-                byte[] fromBytes = new byte[4];
-                ByteBuffer.wrap(fromBytes).putInt(carts.size());
-                outputStream.write(fromBytes);
-
-
+            for (int i = 0; i < numberOfTools; i++) {
+                Tool tool = new Tool(inputStream);
+                tools.addTool(tool);
             }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
 
-            }
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -83,8 +65,7 @@ public class GetToolsThread extends Thread {
         }
     }
 
-    public void stopGettingMessages(){
-        go = false;
-        interrupt();
+    public Tools getTools() {
+        return this.tools;
     }
 }

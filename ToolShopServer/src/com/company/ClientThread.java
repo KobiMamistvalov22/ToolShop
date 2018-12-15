@@ -5,21 +5,22 @@ import java.net.Socket;
 import java.util.Map;
 
 public class ClientThread extends Thread{
-
-
     public final int SIGNUP = 100;
     public final int LOGIN = 101;
     public final int OK = 200;
     public final int FAILURE = 201;
+    public final int GET_TOOLS = 250;
     private Socket socket;
 
     private Map<String, User> users;
+    private Tools tools;
     private InputStream inputStream;
     private OutputStream outputStream;
 
     public ClientThread(Socket socket, Map<String, User> users) {
         this.socket = socket;
         this.users = users;
+        this.tools = new Tools();
     }
 
     @Override
@@ -34,6 +35,9 @@ public class ClientThread extends Thread{
                     break;
                 case LOGIN:
                     login();
+                    break;
+                case GET_TOOLS:
+                    sendTools();
                     break;
             }
         } catch (IOException e) {
@@ -95,6 +99,10 @@ public class ClientThread extends Thread{
             }
         }
         return false;
+    }
+
+    private void sendTools() throws IOException {
+        this.tools.write(outputStream);
     }
 }
 

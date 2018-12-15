@@ -15,7 +15,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item [" + tool + " price = " + price + "]";
+        return "Item " + tool + " price = " + price ;
     }
 
     public String getTool() {

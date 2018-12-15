@@ -17,9 +17,8 @@ public class Main {
                 Map<String, User> users = getUsersFromFile();
 
                 while (true){
-                    System.out.println("waiting to clients...");
+                    System.out.println("Waiting for clients...");
                     Socket socket = serverSocket.accept();
-                    File file = new File(String.valueOf(socket.getInputStream()));
                     new ClientThread(socket, users).start();
                 }
 
@@ -38,13 +37,12 @@ public class Main {
     }
 
     private static Map<String, User> getUsersFromFile() {
-        String basePath = "C:\\Kobi projects\\Home projects\\usersFile.txt";
-        File usersFile = new File(basePath);
+        File usersFile = new File("usersFile.txt");
         Map<String, User> users = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(usersFile))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+            String line = br.readLine();
+            while (line != null && line.length() > 0) {
                 String[] lineArr = line.split(",");
                 String userName = lineArr[0];
                 String password = lineArr[1];
@@ -57,5 +55,4 @@ public class Main {
         }
         return users;
     }
-
 }

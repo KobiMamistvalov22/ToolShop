@@ -15,6 +15,7 @@ public class Main {
         String input = "";
 
         boolean success = false;
+        //------------Login or Signup--------------
         do {
             System.out.println("1. login");
             System.out.println("2. signup");
@@ -30,13 +31,13 @@ public class Main {
             userName = s.nextLine();
             System.out.println("Enter passWord: ");
             passWord = s.nextLine();
-            //file = new File(file + userName + ".txt");
-
             success = Server.login(userName, passWord, isSignup);
+
+            //---If in signup the userName exist or in login the userName/password not exist in the memory&&file
             if (!success) {
                 System.out.println("Wrong credentials, Please try again...");
             }
-
+        //---If the client signup/login in the memory&&file and shop Opened From the server side
         }while (!success);
 
         Tools tools = Server.toolsThread.getTools();
@@ -63,12 +64,10 @@ public class Main {
             }
 
             if(choice != exitIndex){
-                //printWriter.println(choice);
-                //printWriter.close();
                 if (choice <= numberOfTools) {
                     cart.addTool(tools.getToolInPosition(choice - 1));
                 } else {
-                    System.out.println("invalid choice");
+                    System.out.println("invalid choice\n");
                 }
 
                 System.out.println(cart.printListToTotal());
@@ -78,6 +77,8 @@ public class Main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            //---Option choose if the client want mor tools or buy and get out of the store
             System.out.println("Do you want more?");
             try {
                 sleep(200);
@@ -88,6 +89,7 @@ public class Main {
             System.out.println("6. No, Go to Buy!");
             choice = readInteger();
 
+
             switch (choice){
                 case 5:
                     System.out.println("You are back");
@@ -97,7 +99,9 @@ public class Main {
                     System.out.println("Thank you about your buying");
                     return;
                 default:
-                    System.out.println("invalid choice");
+                    if (choice != 5 || choice != 6){
+                        System.out.println("invalid choice");
+                    }
             }
         }
 
@@ -107,9 +111,5 @@ public class Main {
         String input = scanner.nextLine();
         return Integer.valueOf(input);
     }
-    private static int readString(){
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        return Integer.valueOf(input);
-    }
+
 }

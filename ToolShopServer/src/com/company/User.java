@@ -6,7 +6,7 @@ import java.io.OutputStream;
 
 public class User {
     private String userName , passWord;
-
+//---Getting from client side the User
     public User(InputStream inputStream) throws IOException {
         int userNameLength = inputStream.read();
         byte[] userNameByte = new byte[userNameLength];

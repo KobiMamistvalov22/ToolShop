@@ -15,10 +15,11 @@ public class Main {
             try {
                 serverSocket = new ServerSocket(PORT);
                 Map<String, User> users = getUsersFromFile();
-
+                //The server starting to work
                 while (true){
                     System.out.println("Waiting for clients...");
                     Socket socket = serverSocket.accept();
+                    //File file = new File(String.valueOf(socket.getInputStream()));
                     new ClientThread(socket, users).start();
                 }
 
@@ -35,14 +36,14 @@ public class Main {
                 }
             }
     }
-
+//---All the Users are written and preserved in the memory and in the server file
     private static Map<String, User> getUsersFromFile() {
         File usersFile = new File("usersFile.txt");
         Map<String, User> users = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(usersFile))) {
-            String line = br.readLine();
-            while (line != null && line.length() > 0) {
+            String line;
+            while ((line = br.readLine()) != null && line.length() > 0) {
                 String[] lineArr = line.split(",");
                 String userName = lineArr[0];
                 String password = lineArr[1];

@@ -16,6 +16,7 @@ public class ClientThread extends Thread{
     private Tools tools;
     private InputStream inputStream;
     private OutputStream outputStream;
+    //---Here the client connecting with the server
 
     public ClientThread(Socket socket, Map<String, User> users) {
         this.socket = socket;
@@ -74,7 +75,7 @@ public class ClientThread extends Thread{
         if (!users.containsKey(user.getUserName())){
             users.put(user.getUserName(), user);
 
-            // add to usersFile name,pass
+            // Add to usersFile name,pass
             BufferedWriter usersFile = new BufferedWriter(new FileWriter("usersFile.txt", true));
 
             PrintWriter printWriter = new PrintWriter(usersFile);

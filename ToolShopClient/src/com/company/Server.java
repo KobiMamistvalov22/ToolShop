@@ -23,6 +23,7 @@ public class Server {
         Socket socket = null;
         InputStream inputStream = null;
         OutputStream outputStream = null;
+        //---Here the client connecting with the server
         try {
             socket = new Socket(HOST, PORT);
             inputStream = socket.getInputStream();
@@ -31,7 +32,7 @@ public class Server {
             user = new User(userName, passWord);
             user.write(outputStream);
             int response = inputStream.read();
-            if (response == OK) {
+            if (response == OK) {//Go to GetToolsThread
                 toolsThread = new GetToolsThread();
                 toolsThread.run();
                 return true;

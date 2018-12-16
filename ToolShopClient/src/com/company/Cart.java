@@ -27,7 +27,7 @@ public class Cart implements CartInterface {
     public void clear() {
         this.tools.clear();
     }
-
+//---------Here are all the tools selected from the client and calculate the total price of all the tools
     @Override
     public String printListToTotal() {
         String result = "Your cart:\n";

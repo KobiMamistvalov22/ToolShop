@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+//---Here the tools connecting and come from the server
 
 public class GetToolsThread extends Thread {
 

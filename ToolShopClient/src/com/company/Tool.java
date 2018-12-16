@@ -14,7 +14,7 @@ public class Tool {
         this.toolName = toolName;
         this.price = price;
     }
-
+//-------Get the toolName and the price from the server
     public Tool(InputStream inputStream) throws IOException {
         int toolNameLength = inputStream.read();
         if (toolNameLength == -1)
@@ -26,13 +26,11 @@ public class Tool {
         this.toolName = new String(toolNameBytes);
 
         int price = inputStream.read();
-//        if (priceLength == -1)
-//            throw new IOException("ahahahahah");
-//        byte[] priceBytes = new byte[priceLength];
-//        actuallyRead = inputStream.read(priceBytes);
-//        if (actuallyRead != 4)
-//            throw new IOException("ccccc");
-        this.price = price;
+        byte[] priceBytes = new byte[4];
+        actuallyRead = inputStream.read(priceBytes);
+        if (actuallyRead != 4)
+            throw new IOException("ccccc");
+        this.price = ByteBuffer.wrap(priceBytes).getInt();
     }
 
     public void write(OutputStream outputStream) throws IOException {

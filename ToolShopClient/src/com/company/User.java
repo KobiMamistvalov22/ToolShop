@@ -3,7 +3,7 @@ package com.company;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
+//===Get the User from server and write for login or signup to server the User
 public class User {
 
     private String userName, passWord;
@@ -16,7 +16,7 @@ public class User {
             throw new IOException("mnv");
         }
         this.userName = new String(userNameByte);
-        //pass
+
         int passWordLength = inputStream.read();
         byte[] passWordByte = new byte[passWordLength];
         actuallyRead = inputStream.read(passWordByte);

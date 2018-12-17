@@ -108,8 +108,13 @@ public class Main {
     }
     private static int readInteger(){
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        return Integer.valueOf(input);
+       try {
+           String input = scanner.nextLine();
+           return Integer.valueOf(input);
+       }catch (NumberFormatException e) {
+           System.out.println("Try again");
+          return readInteger();
+       }
     }
 
 }

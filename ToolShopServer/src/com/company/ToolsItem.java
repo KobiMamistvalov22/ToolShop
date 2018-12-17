@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 
 import java.io.IOException;
 import java.io.InputStream;
-//Create tool
+//---Tool Criterion
 public class ToolsItem {
     private String toolName;
     private int price;
